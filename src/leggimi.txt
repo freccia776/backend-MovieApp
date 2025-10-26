@@ -1,0 +1,11 @@
+Ho aggiunto la librearia ZOD per aumentare i controlli
+di auth. types auth.validation
+
+da implementare su service e controller
+
+costruiamo un backend sicuro.
+
+IN TEORIA HO COMPLETATO LA VALIDAZIONE ZOD.
+
+Adesso bisogna controllare la sicurezza del JWT e 
+implementare la funzione di refreshtoken e il refreshtoken

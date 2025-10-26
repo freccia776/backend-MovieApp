@@ -1,0 +1,74 @@
+// Questo file è il "progetto" del tuo database.
+// Ogni volta che lo modifichi, esegui "npx prisma migrate dev" per applicare i cambiamenti.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// === MODELLO UTENTE ===
+// Contiene tutte le informazioni relative a un singolo utente.
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String   // Salveremo qui la password CRITTOGRAFATA, non quella in chiaro!
+
+  // Campi opzionali per il profilo
+  firstName       String // Il "?" significa che il campo può essere vuoto (NULL)
+  lastName        String
+  age             Int
+  profileImageUrl String? // Salveremo qui l'URL dell'immagine, non il file
+  bio             String? // Una breve biografia o descrizione
+
+  // Gestione dell'account
+  isBanned              Boolean  @default(false) // Perfetto per bannare un utente
+  passwordResetToken    String?  // Qui salveremo un token temporaneo per il reset password
+  passwordResetExpires  DateTime? // E qui la sua data di scadenza
+
+  // Relazioni con gli altri modelli
+  favoriteMovies    FavoriteMovie[]
+  favoriteTvShows   FavoriteTvShow[]
+  
+  // Campi automatici
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+// === MODELLI PER I PREFERITI ===
+// Vedi la spiegazione sotto per capire perché usiamo due tabelle separate
+
+model FavoriteMovie {
+  id        Int      @id @default(autoincrement())
+  movieId   Int      // L'ID numerico del film (es. da un'API come TMDB)
+  
+  // Relazione con l'utente
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+
+  // Campi automatici
+  createdAt DateTime @default(now())
+
+  // Assicura che un utente non possa mettere lo stesso film nei preferiti più volte
+  @@unique([userId, movieId])
+}
+
+model FavoriteTvShow {
+  id        Int      @id @default(autoincrement())
+  tvShowId  Int      // L'ID numerico della serie TV
+
+  // Relazione con l'utente
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+
+  // Campi automatici
+  createdAt DateTime @default(now())
+  
+  // Assicura che un utente non possa mettere la stessa serie nei preferiti più volte
+  @@unique([userId, tvShowId])
+}

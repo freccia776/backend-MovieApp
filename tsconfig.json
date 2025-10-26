@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    /* === Percorsi sorgente/output === */
+    "rootDir": "./src",                     // Dove scrivi i file .ts
+    "outDir": "./dist",                     // Dove verranno messi i file compilati .js
+
+    /* === Target & Moduli === */
+    "target": "es2020",                     // Versione JavaScript compatibile con Node 18+
+    "module": "commonjs",                   // Sistema moduli usato da Node.js
+    "moduleResolution": "node",             // Come risolve i moduli importati
+    "esModuleInterop": true,                // Permette import default (es. import express from "express")
+    "types": ["node"],                      // Aggiunge i tipi di Node.js
+
+    /* === Controlli & Sicurezza === */
+    "strict": true,                         // Abilita tutti i controlli rigorosi
+    
+    "forceConsistentCasingInFileNames": true, // Evita errori di maiuscole nei nomi file
+    "skipLibCheck": true                    // Evita controlli inutili nei file di librerie
+  },
+  "include": ["src"],                       // Compila tutto dentro src/
+  "exclude": ["node_modules"]               // Ignora le dipendenze
+}
