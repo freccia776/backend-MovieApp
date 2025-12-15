@@ -6,6 +6,7 @@ import { AddMoviePayload, AddTvShowPayload } from '../types/wishlist.types';
 
 export const handleAddMovie = async (req: Request<{}, {}, AddMoviePayload>, res: Response, next: NextFunction) => {
   try {
+    // Il punto esclamativo ! è il non-null assertion operator di TypeScript. FIDATI CHE req.user NON SARÀ MAI undefined QUI.
     // L'ID dell'utente viene preso dal token JWT (grazie al middleware isAuthenticated), non dal body!
     const userId = req.user!.userId; //prendo userid da req.user settato da isAuthenticated
     const { movieId } = req.body;
@@ -62,7 +63,7 @@ export const handleGetUserFavoriteIds = async (req: Request, res: Response, next
   try {
     const userId = req.user!.userId;
     const favoriteIds = await WishlistService.getUserFavoriteIds(userId);
-    res.json(favoriteIds);
+    res.json(favoriteIds); 
   } catch (error) {
     next(error);
   }

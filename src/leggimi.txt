@@ -7,5 +7,33 @@ costruiamo un backend sicuro.
 
 IN TEORIA HO COMPLETATO LA VALIDAZIONE ZOD.
 
-Adesso bisogna controllare la sicurezza del JWT e 
-implementare la funzione di refreshtoken e il refreshtoken
+Adesso bisogna controllare la sicurezza del JWT 
+
+
+
+REFRESHTOKEN AUTOGENERATIVO IMPLEMENTATO. SPIEGAZIONE SU CANVA.
+
+
+!!!11/12/2025 SIAMO RIMASTI ALL'IMPLEMENTAZIONE DEL CARICAMENTO 
+IMMAGINI SU AWS. DA IMPLEMENTARE ELIMINA IMMAGINE E RIUPLOAD DA 
+CONTROLLARE. CONTROLLARE CHE SI AGGIORNI URL SU DATABASE.
+
+
+//ATTACCO BRUTEFORCE E CRSF?? SICUREZZA LOGIN.
+
+
+1. Architettura del Flusso di caricamento immagini 
+
+Frontend (App): L'utente sceglie una foto dalla galleria.
+
+Frontend: Invia la foto al backend (endpoint /api/user/avatar) come FormData.
+
+Backend (Multer): Riceve il file e lo tiene temporaneamente nella RAM.
+
+Backend (Sharp): Ridimensiona l'immagine (es. 300x300px), la comprime e la converte in WebP (molto leggera).
+
+Backend (AWS SDK): Carica l'immagine ottimizzata nel tuo bucket AWS S3.
+
+Backend (Prisma): Salva l'URL pubblico dell'immagine (https://...s3...) nel campo profileImageUrl dell'utente nel database.
+
+Frontend: Riceve il nuovo URL e aggiorna l'interfaccia.

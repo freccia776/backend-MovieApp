@@ -1,32 +1,32 @@
 // Questo è il punto di ingresso ("entry point") della nostra applicazione, il "manager del ristorante".
-// Configura il server, imposta i middleware globali, collega le rotte e avvia l'ascolto delle richieste.
 
-// Importiamo le librerie necessarie.
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors'; // Per permettere al frontend di comunicare con il backend.
 import dotenv from 'dotenv'; // Per caricare le variabili d'ambiente dal file .env.
 
-// Importiamo il nostro "menù" di rotte per l'autenticazione.
+//IMPORT LE ROTTE DEFINITE
 import authRoutes from './routes/auth.routes';
 import wishlistRoutes from './routes/wishlist.routes';
-
+import userRoutes from './routes/user.routes';
 // Carichiamo le variabili dal file .env (es. DATABASE_URL, JWT_SECRET).
 dotenv.config();
 
 // Creiamo l'applicazione Express.
 const app = express();
 // Definiamo la porta su cui il server ascolterà. La prende dal file .env o usa 3001 come default.
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; /////DA CAMBIARE???
 
 // --- MIDDLEWARE GLOBALI ---
 // I middleware sono funzioni che vengono eseguite per OGNI richiesta che arriva al server.
 
 // `cors()`: Abilita il Cross-Origin Resource Sharing. Senza questo, il tuo frontend React Native
 // riceverebbe un errore di sicurezza tentando di chiamare il backend.
+
 app.use(cors());
 
 // `express.json()`: Fa il "parsing" del corpo delle richieste in arrivo.
 // Trasforma il testo JSON inviato dal frontend in un oggetto JavaScript utilizzabile in `req.body`.
+
 app.use(express.json());
 
 // --- ROTTE ---
@@ -46,6 +46,10 @@ app.use('/api/auth', authRoutes);
 // Tutte le rotte definite in `wishlist.routes.ts` saranno ora accessibili con il prefisso `/api/wishlist`.
 // Esempio: la rotta `/addfilm` diventerà `/api/wishlist/addfilm`.
 app.use('/api/wishlist', wishlistRoutes); 
+
+
+app.use('/api/user', userRoutes); // Rotte per la gestione dell'utente (caricamento foto profilo aggiugere modifica parametri))
+
 
 // --- GESTORE DI ERRORI GLOBALE (Migliorato) ---
 // Questo middleware speciale viene attivato solo quando si chiama `next(error)`.

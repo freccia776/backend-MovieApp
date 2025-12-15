@@ -16,6 +16,8 @@ router.post('/register', AuthController.handleRegister);
 // Quando arriva una richiesta POST all'URL /login, Express chiamerà la funzione `handleLogin` dal nostro controller.
 router.post('/login', AuthController.handleLogin);
 
+router.post('/refresh', AuthController.handleRefreshToken);
+
 // Esportiamo il router per poterlo usare nel nostro file principale (index.ts).
 export default router;
 

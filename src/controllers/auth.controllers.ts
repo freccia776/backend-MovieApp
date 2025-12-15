@@ -5,7 +5,7 @@
 import { Request, Response, NextFunction } from 'express'; // Importiamo i tipi base di Express.
 import * as AuthService from '../services/auth.service'; // Importiamo tutte le funzioni dal nostro "chef".
 //import { RegisterBody, LoginBody } from '../types/auth.types'; // Importiamo i tipi per il corpo della richiesta.
-import { RegisterBody, LoginBody } from '../types/auth.validation';
+import { RegisterBody, LoginBody, RefreshBody } from '../types/auth.validation';
 /**
  * Gestisce la richiesta di registrazione.
  */
@@ -29,16 +29,39 @@ export const handleRegister = async (req: Request<{}, {}, RegisterBody>, res: Re
 export const handleLogin = async (req: Request<{}, {}, LoginBody>, res: Response, next: NextFunction) => {
   try {
     // Chiamiamo il service di login, passando il corpo della richiesta.
-    const { token, user } = await AuthService.loginUser(req.body);
+    const { accessToken, refreshToken, user } = await AuthService.loginUser(req.body);
     // Se il service ha successo, inviamo una risposta con il token e i dati dell'utente.
+
+      // --- CORREZIONE FONDAMENTALE ---
+    // Prima inviavamo solo id, email, username.
+    // Ora inviamo TUTTI i dati del profilo necessari al frontend.
+    // Rimuoviamo la password per sicurezza prima di inviare.
+    const { password, ...userWithoutPassword } = user;
+
     res.json({
       message: 'Login effettuato con successo!',
-      token,
-      user: { id: user.id, email: user.email, username: user.username },
+      accessToken,
+      refreshToken,
+      user: userWithoutPassword, 
     });
   } catch (error) {
     // Se il service lancia un errore (es. credenziali errate), lo passiamo al gestore globale.
     next(error);
   }
 };
+
+
+export const handleRefreshToken = async (req: Request<{}, {}, RefreshBody>, res: Response, next: NextFunction) => {
+    try {
+        // Passiamo l'intero req.body al service per la validazione con Zod
+        //adesso il service restituisce anche il nuovo refresh token
+        const { accessToken, refreshToken } = await AuthService.refreshAccessToken(req.body);
+        res.json({ accessToken, refreshToken}); // Invia solo il nuovo access token
+    } catch (error) {
+        // Se il refresh token non è valido, l'errore verrà passato al gestore globale
+        // che solitamente risponde con 401 Unauthorized.
+        next(error);
+    }
+};
+
 

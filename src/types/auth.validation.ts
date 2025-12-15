@@ -1,5 +1,5 @@
 import { z } from 'zod'; // Importiamo la libreria zod
-
+import dotenv from 'dotenv'
 // --- SCHEMA PER LA REGISTRAZIONE ---
 // Definiamo un "oggetto" zod che rappresenta la struttura attesa del req.body per /register
 export const registerSchema = z.object({
@@ -44,6 +44,19 @@ export const loginSchema = z.object({
   // Campo password: stringa non vuota.
   password: z.string().min(1, { error: "Password richiesta."}),
 });
+
+
+
+// --- NUOVO SCHEMA PER IL REFRESH ---
+// Definisce cosa ci aspettiamo nel corpo della richiesta per il refresh.
+export const refreshSchema = z.object({
+  refreshToken: z.string().min(1, { message: "Refresh token richiesto."}),
+});
+
+
+
+// Nuovo tipo inferito per il refresh
+export type RefreshBody = z.infer<typeof refreshSchema>; 
 
 // --- TIPI TYPESCRIPT INFERITI ---
 // Questa è la magia di Zod: crea automaticamente i tipi TypeScript

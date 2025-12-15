@@ -24,6 +24,9 @@ model User {
   age             Int
   profileImageUrl String? // Salveremo qui l'URL dell'immagine, non il file
   bio             String? // Una breve biografia o descrizione
+  // RefreshTOKEN
+
+  refreshToken          String?  @unique
 
   // Gestione dell'account
   isBanned              Boolean  @default(false) // Perfetto per bannare un utente
