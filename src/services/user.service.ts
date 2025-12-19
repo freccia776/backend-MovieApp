@@ -141,3 +141,32 @@ export const updateUserProfileData = async (userId: number, rawData: unknown) =>
 
   return updatedUser;
 };
+
+
+export const getUserById = async (userId: number) => {
+  const user = await prisma.user.findUnique({
+      where: { id: userId },
+      // SELEZIONIAMO SOLO I DATI PUBBLICI
+      // Non restituiamo MAI la password o il refresh token!
+      select: {
+        id: true,
+        username: true,
+        firstName: true,
+        lastName: true,
+        age: true,
+        profileImageUrl: true,
+        bio: true,
+        createdAt: true,
+        
+        //I CAMPI IN PIÙ CHE NON SONO RICHIESTI NEL FRONTEND VENGONO SEMPLICEMENTE IGNORATI.
+      }
+    });
+
+    if (!user) {
+      throw new Error("Utente non trovato");
+    }
+
+    return user;
+
+
+};

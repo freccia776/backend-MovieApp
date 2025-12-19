@@ -12,6 +12,9 @@ const router = Router();
 // GET /api/wishlist/ids
 router.get('/ids', isAuthenticated, WishlistController.handleGetUserFavoriteIds);
 
+// --- NUOVA ROTTA: Preferiti di un amico (dall'ID nell'URL) ---
+router.get('/user/:userId', isAuthenticated, WishlistController.handleGetFriendFavoriteIds);
+
 // --- GESTIONE FILM ---
 // Aggiunge un film alla wishlist.
 // POST /api/wishlist/movies

@@ -10,7 +10,7 @@ export const uploadAvatar = async (req: Request, res: Response, next: NextFuncti
     if (!req.file) { 
       return res.status(400).json({ error: 'Nessun file caricato. Assicurati di inviare un campo "avatar".' });
     }
-
+    
     // L'ID utente viene dal token JWT (grazie al middleware isAuthenticated)
     // Se TS si lamenta di 'user', è perché dobbiamo estendere l'interfaccia Request (lo abbiamo fatto nel middleware)
 
@@ -67,6 +67,26 @@ export const updateUserProfile = async (req: Request, res: Response, next: NextF
     next(error);
 
   }
+
+
+};
+
+export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+
+  try {
+      // Leggiamo l'ID dall'URL (es. /api/user/5)
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) { //isnan controlla se non è un numero
+        return res.status(400).json({ error: "ID utente non valido" });
+      }
+
+      const userProfile = await UserService.getUserById(userId);
+
+      res.json(userProfile);
+    } catch (error) {
+      next(error);
+    }
 
 
 };

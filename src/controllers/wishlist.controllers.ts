@@ -69,3 +69,18 @@ export const handleGetUserFavoriteIds = async (req: Request, res: Response, next
   }
 };
 
+
+// --- NUOVA FUNZIONE: Prende la wishlist di un utente specifico tramite ID ---
+export const handleGetFriendFavoriteIds = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: "ID utente non valido" });
+    }
+    // Riutilizziamo la stessa funzione del service, ma passiamo l'ID ricevuto dall'URL
+    const favoriteIds = await WishlistService.getUserFavoriteIds(userId);
+    res.json(favoriteIds);
+  } catch (error) {
+    next(error);
+  }
+};

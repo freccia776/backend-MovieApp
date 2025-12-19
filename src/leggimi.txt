@@ -37,3 +37,6 @@ Backend (AWS SDK): Carica l'immagine ottimizzata nel tuo bucket AWS S3.
 Backend (Prisma): Salva l'URL pubblico dell'immagine (https://...s3...) nel campo profileImageUrl dell'utente nel database.
 
 Frontend: Riceve il nuovo URL e aggiorna l'interfaccia.
+
+
+ZIOPERA NON FUNZIONA IL CARICAMENTO PROFILO AMICI 

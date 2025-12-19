@@ -33,5 +33,7 @@ router.delete('/avatar', isAuthenticated, UserController.removeAvatar);
 
 router.patch('/profile', isAuthenticated, UserController.updateUserProfile); // Rotta per aggiornare i parametri utente (es. username, email)
 
+// GET /api/user/123
+router.get('/:id', isAuthenticated, UserController.getProfile);
 
 export default router;
