@@ -37,9 +37,48 @@ model User {
   favoriteMovies    FavoriteMovie[]
   favoriteTvShows   FavoriteTvShow[]
   
+  
+  // Relazioni per le amicizie
+  // Un utente può essere colui che INVIA la richiesta (requester)
+
+  sentRequests     Friendship[] @relation("FriendshipRequester")
+
+
+  // O colui che RICEVE la richiesta (addressee)
+
+  receivedRequests Friendship[] @relation("FriendshipAddressee")
+  
+  // ... (altre relazioni esistenti)
+
+
   // Campi automatici
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+
+// Nuovo Modello per gestire lo stato dell'amicizia
+model Friendship {
+  id          Int      @id @default(autoincrement())
+  status      FriendshipStatus @default(PENDING)
+  
+  requester   User     @relation("FriendshipRequester", fields: [requesterId], references: [id])
+  requesterId Int
+  
+  addressee   User     @relation("FriendshipAddressee", fields: [addresseeId], references: [id])
+  addresseeId Int
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Assicura che non ci siano duplicati (A non può chiedere amicizia a B due volte)
+  @@unique([requesterId, addresseeId])
+}
+
+// Enum per lo stato (Senza DECLINED)
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }
 
 

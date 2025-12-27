@@ -8,6 +8,7 @@ import dotenv from 'dotenv'; // Per caricare le variabili d'ambiente dal file .e
 import authRoutes from './routes/auth.routes';
 import wishlistRoutes from './routes/wishlist.routes';
 import userRoutes from './routes/user.routes';
+import friendRoutes from './routes/friends.routes'
 // Carichiamo le variabili dal file .env (es. DATABASE_URL, JWT_SECRET).
 dotenv.config();
 
@@ -50,6 +51,9 @@ app.use('/api/wishlist', wishlistRoutes);
 
 app.use('/api/user', userRoutes); // Rotte per la gestione dell'utente (caricamento foto profilo aggiugere modifica parametri))
 
+
+//ROTTA AMICIZIE
+app.use('/api/friends', friendRoutes); // <-- 2. COLLEGA LA ROTTA QUI
 
 // --- GESTORE DI ERRORI GLOBALE (Migliorato) ---
 // Questo middleware speciale viene attivato solo quando si chiama `next(error)`.

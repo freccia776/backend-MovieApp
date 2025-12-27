@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as UserService from '../services/user.service';
 
+
+//SCHEMI CON ZOD???
 /**
  * Gestisce l'upload dell'avatar utente.
  */
@@ -75,7 +77,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
 
   try {
       // Leggiamo l'ID dall'URL (es. /api/user/5)
-      const userId = parseInt(req.params.id);
+      const userId = parseInt(req.params.id); //lo prendiamo dai parametri passati.
 
       if (isNaN(userId)) { //isnan controlla se non è un numero
         return res.status(400).json({ error: "ID utente non valido" });
